@@ -1,0 +1,20 @@
+#!/bin/sh
+opkg install /ipks/*
+
+# The script below should be run after mac80211_hwsim is loaded.
+MODULE="mac80211_hwsim"
+while ! (lsmod | grep -o ^$MODULE) ; do sleep 1; done
+
+uci -q batch << EOI
+set network.lan.proto='static'
+set network.lan.ipaddr='192.168.96.2'
+set network.lan.netmask='255.255.255.0'
+set network.lan.ip6assign='30'
+set network.lan.gateway='192.168.96.1'
+set network.lan.dns='8.8.8.8'
+set network.lan.broadcast='192.168.96.3'
+commit network
+set wireless.radio0.disabled='0'
+set wireless.default_radio0.ssid='AndroidWifi'
+commit wireless
+EOI
