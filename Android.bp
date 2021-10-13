@@ -1,0 +1,30 @@
+package {
+    default_visibility: ["//visibility:private"],
+}
+
+filegroup {
+    name: "openwrt_license_files",
+    visibility: [":__subpackages__"],
+    srcs: [
+        "LICENSE",
+        "HOW_TO_GET_SOURCE_CODE",
+    ],
+}
+
+license {
+    name: "openwrt_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+        "SPDX-license-identifier-BSD",
+        "SPDX-license-identifier-GPL-2.0",
+        "SPDX-license-identifier-GPL-3.0",
+        "SPDX-license-identifier-LGPL-2.1",
+        "SPDX-license-identifier-MIT",
+        "SPDX-license-identifier-ISC",
+    ],
+    license_text: [
+        "LICENSE",
+        "HOW_TO_GET_SOURCE_CODE",
+    ],
+}

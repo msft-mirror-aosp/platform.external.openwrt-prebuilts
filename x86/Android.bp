@@ -1,0 +1,60 @@
+genrule {
+    name: "openwrt_customization",
+    tools: [
+        "make_f2fs",
+        "sload_f2fs",
+    ],
+    srcs: [
+        ":openwrt_license_files",
+        "kmods/*",
+        "packages/*",
+        "uci-defaults/*",
+    ],
+    out: ["customization.img"],
+    cmd: "mkdir -p $(genDir)/root/upper/etc/uci-defaults && " +
+         "mkdir -p $(genDir)/root/upper/ipks && " +
+         "cp $(in) $(genDir)/ && " +
+         "mv $(genDir)/*.ipk $(genDir)/root/upper/ipks && " +
+         "mv $(genDir)/LICENSE $(genDir)/HOW_TO_GET_SOURCE_CODE $(genDir)/root/upper && " +
+         "mv $(genDir)/0_network_config $(genDir)/root/upper/etc/uci-defaults && " +
+         "ln -s 2 $(genDir)/root/.fs_state && " +
+         "truncate -s 128M $(out) && " +
+         "$(location make_f2fs) $(out) && " +
+         "$(location sload_f2fs) -f $(genDir)/root -t / $(out)",
+}
+
+genrule {
+    name: "openwrt_rootfs_base_img",
+    srcs: [
+        "images/openwrt-21.02.0-x86-64-generic-squashfs-rootfs.img.gz",
+    ],
+    out: ["base_rootfs.img"],
+    cmd: "cp $(in) $(genDir) && gzip -d $(genDir)/* && cp $(genDir)/* $(out)",
+}
+
+genrule {
+    name: "combined_openwrt_rootfs",
+    tools: [
+        "append_squashfs_overlay",
+    ],
+    srcs: [
+        ":openwrt_rootfs_base_img",
+        ":openwrt_customization",
+    ],
+    out: ["openwrt_rootfs.img"],
+    cmd: "$(location append_squashfs_overlay) $(in) $(out) -w",
+}
+
+prebuilt_etc_host {
+    name: "openwrt_rootfs",
+    src: ":combined_openwrt_rootfs",
+    sub_dir: "openwrt/images",
+    visibility: ["//device/google/cuttlefish/build"],
+}
+
+prebuilt_etc_host {
+    name: "openwrt_kernel",
+    src: "images/openwrt-21.02.0-x86-64-generic-kernel.bin",
+    sub_dir: "openwrt/images",
+    visibility: ["//device/google/cuttlefish/build"],
+}
