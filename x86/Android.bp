@@ -64,7 +64,7 @@ prebuilt_etc_host {
 }
 
 prebuilt_etc_host {
-    name: "openwrt_kernel",
+    name: "kernel_for_openwrt",
     src: "images/openwrt-21.02.0-x86-64-generic-kernel.bin",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
