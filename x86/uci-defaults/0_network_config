@@ -1,9 +1,8 @@
 #!/bin/sh
 opkg install /ipks/*
 
-# The script below should be run after mac80211_hwsim is loaded.
-MODULE="mac80211_hwsim"
-while ! (lsmod | grep -o ^$MODULE) ; do sleep 1; done
+# The script below should be run after uci for wireless is available.
+while ! (uci show wireless | grep wireless)  ; do sleep 1; echo "wait for wlan" > /dev/kmsg; done
 
 uci -q batch << EOI
 set network.lan.proto='static'
@@ -18,3 +17,4 @@ set wireless.radio0.disabled='0'
 set wireless.default_radio0.ssid='AndroidWifi'
 commit wireless
 EOI
+
