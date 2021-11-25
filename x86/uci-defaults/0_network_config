@@ -14,7 +14,7 @@ set network.lan.dns='8.8.8.8'
 set network.lan.broadcast='192.168.96.3'
 commit network
 set wireless.radio0.disabled='0'
-set wireless.default_radio0.ssid='AndroidWifi'
+set wireless.default_radio0.ssid='VirtWifi'
 commit wireless
 EOI
 
