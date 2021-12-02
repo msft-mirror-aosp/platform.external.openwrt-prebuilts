@@ -19,10 +19,17 @@ set wireless.default_radio0.network='wan'
 set wireless.default_radio0.ssid='VirtWifi'
 commit wireless
 add firewall rule
+set firewall.@rule[-1].name='Allow SSH'
 set firewall.@rule[-1].src=wan
 set firewall.@rule[-1].target=ACCEPT
 set firewall.@rule[-1].proto=tcp
 set firewall.@rule[-1].dest_port=22
+add firewall rule
+set firewall.@rule[-1].name='Allow LuCI'
+set firewall.@rule[-1].src=wan
+set firewall.@rule[-1].target=ACCEPT
+set firewall.@rule[-1].proto=tcp
+set firewall.@rule[-1].dest_port='80 443'
 commit firewall
 EOI
 /etc/init.d/firewall restart
