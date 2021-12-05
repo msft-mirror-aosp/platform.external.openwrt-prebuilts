@@ -5,16 +5,32 @@ opkg install /ipks/*
 while ! (uci show wireless | grep wireless)  ; do sleep 1; echo "wait for wlan" > /dev/kmsg; done
 
 uci -q batch << EOI
-set network.lan.proto='static'
-set network.lan.ipaddr='192.168.96.2'
-set network.lan.netmask='255.255.255.0'
-set network.lan.ip6assign='30'
-set network.lan.gateway='192.168.96.1'
-set network.lan.dns='8.8.8.8'
-set network.lan.broadcast='192.168.96.3'
+rename network.lan='wan'
+set network.wan.proto='static'
+set network.wan.ipaddr='192.168.96.2'
+set network.wan.netmask='255.255.255.0'
+set network.wan.ip6assign='30'
+set network.wan.gateway='192.168.96.1'
+set network.wan.dns='8.8.8.8'
+set network.wan.broadcast='192.168.96.3'
 commit network
 set wireless.radio0.disabled='0'
+set wireless.default_radio0.network='wan'
 set wireless.default_radio0.ssid='VirtWifi'
 commit wireless
+add firewall rule
+set firewall.@rule[-1].name='Allow SSH'
+set firewall.@rule[-1].src=wan
+set firewall.@rule[-1].target=ACCEPT
+set firewall.@rule[-1].proto=tcp
+set firewall.@rule[-1].dest_port=22
+add firewall rule
+set firewall.@rule[-1].name='Allow LuCI'
+set firewall.@rule[-1].src=wan
+set firewall.@rule[-1].target=ACCEPT
+set firewall.@rule[-1].proto=tcp
+set firewall.@rule[-1].dest_port='80 443'
+commit firewall
 EOI
+/etc/init.d/firewall restart
 
