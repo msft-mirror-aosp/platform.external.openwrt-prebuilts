@@ -10,7 +10,7 @@ package {
 }
 
 genrule {
-    name: "openwrt_customization",
+    name: "openwrt_customization_x86_64",
     tools: [
         "make_f2fs",
         "sload_f2fs",
@@ -38,7 +38,7 @@ genrule {
 }
 
 genrule {
-    name: "openwrt_rootfs_base_img",
+    name: "openwrt_rootfs_base_img_x86_64",
     srcs: [
         "images/openwrt-22.03.2-x86-64-generic-squashfs-rootfs.img.gz",
     ],
@@ -47,27 +47,27 @@ genrule {
 }
 
 genrule {
-    name: "combined_openwrt_rootfs",
+    name: "combined_openwrt_rootfs_x86_64",
     tools: [
         "append_squashfs_overlay",
     ],
     srcs: [
-        ":openwrt_rootfs_base_img",
-        ":openwrt_customization",
+        ":openwrt_rootfs_base_img_x86_64",
+        ":openwrt_customization_x86_64",
     ],
     out: ["openwrt_rootfs.img"],
     cmd: "$(location append_squashfs_overlay) $(in) $(out) -w",
 }
 
 prebuilt_etc_host {
-    name: "openwrt_rootfs",
-    src: ":combined_openwrt_rootfs",
+    name: "openwrt_rootfs_x86_64",
+    src: ":combined_openwrt_rootfs_x86_64",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
 }
 
 prebuilt_etc_host {
-    name: "kernel_for_openwrt",
+    name: "openwrt_kernel_x86_64",
     src: "images/openwrt-22.03.2-x86-64-generic-kernel.bin",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
