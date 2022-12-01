@@ -259,6 +259,22 @@ iw
 kmod-cfg80211
 kmod-mac80211
 kmod-mac80211-hwsim
+iwinfo
+kmod-crypto-aead
+kmod-crypto-ccm
+kmod-crypto-cmac
+kmod-crypto-crc32c
+kmod-crypto-ctr
+kmod-crypto-gcm
+kmod-crypto-gf128
+kmod-crypto-ghash
+kmod-crypto-hash
+kmod-crypto-hmac
+kmod-crypto-manager
+kmod-crypto-null
+kmod-crypto-rng
+kmod-crypto-seqiv
+kmod-crypto-sha256
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
