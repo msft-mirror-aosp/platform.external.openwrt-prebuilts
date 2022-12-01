@@ -40,7 +40,7 @@ genrule {
 genrule {
     name: "openwrt_rootfs_base_img",
     srcs: [
-        "images/openwrt-21.02.0-x86-64-generic-squashfs-rootfs.img.gz",
+        "images/openwrt-22.03.2-x86-64-generic-squashfs-rootfs.img.gz",
     ],
     out: ["base_rootfs.img"],
     cmd: "cp $(in) $(genDir) && gzip -d $(genDir)/* && cp $(genDir)/* $(out)",
@@ -68,7 +68,7 @@ prebuilt_etc_host {
 
 prebuilt_etc_host {
     name: "kernel_for_openwrt",
-    src: "images/openwrt-21.02.0-x86-64-generic-kernel.bin",
+    src: "images/openwrt-22.03.2-x86-64-generic-kernel.bin",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
 }
