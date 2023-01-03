@@ -5,26 +5,26 @@ config defaults
 	option forward 'REJECT'
 
 config zone
-	option name wifi
-	list network 'wifi'
-	option input ACCEPT
-	option output ACCEPT
-	option forward REJECT
+	option name 'wifi0'
+	list network 'wifi0'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
 
-config 'forwarding'
-	option 'src' 'wifi'
-	option 'dest' 'wan'
+config forwarding
+	option src 'wifi0'
+	option dest 'wan'
 
 config zone
-	option name wifi2
-	list network 'wifi2'
-	option input ACCEPT
-	option output ACCEPT
-	option forward REJECT
+	option name 'wifi1'
+	list network 'wifi1'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
 
-config 'forwarding'
-	option 'src' 'wifi2'
-	option 'dest' 'wan'
+config forwarding
+	option src 'wifi1'
+	option dest 'wan'
 
 config zone
 	option name 'lan'
