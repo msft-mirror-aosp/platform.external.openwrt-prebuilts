@@ -10,9 +10,9 @@ third_party {
   }
   url {
     type: ARCHIVE
-    value: "https://downloads.openwrt.org/releases/22.03.2/"
+    value: "https://downloads.openwrt.org/releases/22.03.3/"
   }
-  version: "22.03.2"
-  last_upgrade_date { year: 2022 month: 11 day: 30 }
+  version: "22.03.3"
+  last_upgrade_date { year: 2023 month: 1 day: 5 }
   license_type: RESTRICTED
 }

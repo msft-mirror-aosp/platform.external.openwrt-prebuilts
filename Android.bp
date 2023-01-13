@@ -46,7 +46,7 @@ genrule_defaults {
 genrule {
     name: "openwrt_rootfs_base_x86_64",
     srcs: [
-        "x86_64/images/openwrt-22.03.2-x86-64-generic-squashfs-rootfs.img.gz",
+        "x86_64/images/openwrt-22.03.3-x86-64-generic-squashfs-rootfs.img.gz",
     ],
     out: ["openwrt_rootfs_base_x86_64.img"],
     defaults: ["openwrt_rootfs_base_defaults"],
@@ -55,7 +55,7 @@ genrule {
 genrule {
     name: "openwrt_rootfs_base_aarch64",
     srcs: [
-        "arm64/images/openwrt-22.03.2-armvirt-64-rootfs-squashfs.img.gz",
+        "arm64/images/openwrt-22.03.3-armvirt-64-rootfs-squashfs.img.gz",
     ],
     out: ["openwrt_rootfs_base_aarch64.img"],
     defaults: ["openwrt_rootfs_base_defaults"],
@@ -77,7 +77,7 @@ genrule_defaults {
          "mkdir -p $(genDir)/root/upper/etc/config && " +
          "cp $(in) $(genDir)/ && " +
          "mv $(genDir)/*.ipk $(genDir)/root/upper/ipks && " +
-         "mv $(genDir)/LICENSE $(genDir)/HOW_TO_GET_SOURCE_CODE $(genDir)/root/upper && " +
+         "mv $(genDir)/LICENSE $(genDir)/HOW_TO_GET_SOURCE_CODE $(genDir)/INFO $(genDir)/root/upper && " +
          "mv $(genDir)/0_default_config $(genDir)/root/upper/etc/uci-defaults && " +
          "find $(genDir) -maxdepth 1 -type f -exec mv {} $(genDir)/root/upper/etc/config \\; && " +
          "ln -s 2 $(genDir)/root/.fs_state && " +
@@ -91,6 +91,7 @@ genrule {
     srcs: [
         "x86_64/kmods/*",
         "x86_64/packages/*",
+        "x86_64/INFO",
     ],
     out: ["openwrt_rootfs_customization_x86_64.img"],
     defaults: ["openwrt_rootfs_customization_defaults"],
@@ -101,6 +102,7 @@ genrule {
     srcs: [
         "arm64/kmods/*",
         "arm64/packages/*",
+        "arm64/INFO",
     ],
     out: ["openwrt_rootfs_customization_aarch64.img"],
     defaults: ["openwrt_rootfs_customization_defaults"],
@@ -151,14 +153,14 @@ prebuilt_etc_host {
 
 prebuilt_etc_host {
     name: "openwrt_kernel_x86_64",
-    src: "x86_64/images/openwrt-22.03.2-x86-64-generic-kernel.bin",
+    src: "x86_64/images/openwrt-22.03.3-x86-64-generic-kernel.bin",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
 }
 
 prebuilt_etc_host {
     name: "openwrt_kernel_aarch64",
-    src: "arm64/images/openwrt-22.03.2-armvirt-64-Image",
+    src: "arm64/images/openwrt-22.03.3-armvirt-64-Image",
     sub_dir: "openwrt/images",
     visibility: ["//device/google/cuttlefish/build"],
 }
