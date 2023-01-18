@@ -33,7 +33,6 @@ config device
 config interface 'wan'
 	option device 'br-lan'
 	option proto 'static'
-	option netmask '255.255.255.252'
 	option ip6assign '30'
 	option dns '8.8.8.8'
 
