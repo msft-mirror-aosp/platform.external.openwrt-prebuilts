@@ -21,20 +21,21 @@ do
     words=$next
 done
 
-# Setup wan based on instance_num. Interface wan will occupy 192.168.96.X.
 rule_name=$(uci add network rule)
+
+# Setup wan based on instance_num. Interface wan will occupy 192.168.96.X.
 if $bridged_host_network; then
     uci set network.wan.gateway="192.168.96.1"
-    uci set network.wan.ipaddr="192.168.96.2"
-    uci set network.wan.broadcast="192.168.96.3"
+    uci set network.wan.netmask="255.255.255.0"
 else
     d_class_wan_gateway=$(expr $instance_num \* 4 - 3);
-    d_class_wan_ipaddr=$(expr $instance_num \* 4 - 2);
-    d_class_wan_broadcast=$(expr $instance_num \* 4 - 1);
     uci set network.wan.gateway="192.168.96."$d_class_wan_gateway
-    uci set network.wan.ipaddr="192.168.96."$d_class_wan_ipaddr
-    uci set network.wan.broadcast="192.168.96."$d_class_wan_broadcast
+    uci set network.wan.netmask="255.255.255.252"
 fi
+d_class_wan_ipaddr=$(expr $instance_num \* 4 - 2);
+d_class_wan_broadcast=$(expr $instance_num \* 4 - 1);
+uci set network.wan.ipaddr="192.168.96."$d_class_wan_ipaddr
+uci set network.wan.broadcast="192.168.96."$d_class_wan_broadcast
 
 # Setup wifi0 and wifi1 based on instance_num.
 # Interfaces wifi0 and wifi1 will occupy 192.168.2.X - 192.168.33.X.
