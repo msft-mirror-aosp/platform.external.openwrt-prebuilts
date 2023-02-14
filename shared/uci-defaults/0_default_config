@@ -1,0 +1,51 @@
+#!/bin/sh
+
+opkg install /ipks/*
+ip link set eth0 mtu 1460
+
+# Extract instance_num of CF instance. The default value is 1.
+instance_num=1
+bridged_host_network=false
+words=$(cat /proc/cmdline)
+while
+    word=${words%%" "*}
+    if echo "$word" | grep "instance_num"; then
+        instance_num=${word#*"="}
+    fi
+    if echo "$word" | grep "bridged_host_network=true"; then
+        bridged_host_network=true
+    fi
+    next=${words#*" "}
+    [ "$words" != "$next" ]
+do
+    words=$next
+done
+
+rule_name=$(uci add network rule)
+
+# Setup wan based on instance_num. Interface wan will occupy 192.168.96.X.
+if $bridged_host_network; then
+    uci set network.wan.gateway="192.168.96.1"
+    uci set network.wan.netmask="255.255.255.0"
+else
+    d_class_wan_gateway=$(expr $instance_num \* 4 - 3);
+    uci set network.wan.gateway="192.168.96."$d_class_wan_gateway
+    uci set network.wan.netmask="255.255.255.252"
+fi
+d_class_wan_ipaddr=$(expr $instance_num \* 4 - 2);
+d_class_wan_broadcast=$(expr $instance_num \* 4 - 1);
+uci set network.wan.ipaddr="192.168.96."$d_class_wan_ipaddr
+uci set network.wan.broadcast="192.168.96."$d_class_wan_broadcast
+
+# Setup wifi0 and wifi1 based on instance_num.
+# Interfaces wifi0 and wifi1 will occupy 192.168.2.X - 192.168.33.X.
+c_class_wifi=$(expr \( $instance_num + 3 \) / 2)
+d_class_wifi0=$(expr \( $instance_num % 2 \* 128 \) + 1)
+d_class_wifi1=$(expr \( $instance_num % 2 \* 128 \) + 65)
+uci set network.wifi0.ipaddr="192.168."$c_class_wifi"."$d_class_wifi0
+uci set network.wifi1.ipaddr="192.168."$c_class_wifi"."$d_class_wifi1
+
+uci commit
+
+# Regarding hostapd issue of OpenWRT 22.03.X versions, reboot it.
+reboot
