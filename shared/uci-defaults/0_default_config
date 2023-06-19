@@ -7,7 +7,7 @@ rule_name=$(uci add network rule)
 
 # Extract configs from /proc/cmdline
 bridged_wifi_tap=false
-webrtc_device_id="cvd-1"
+instance_name="cvd-1"
 words=$(cat /proc/cmdline)
 while
     word=${words%%" "*}
@@ -19,8 +19,8 @@ while
         uci set network.wan.ipaddr=${word#*"="}
     elif echo "$word" | grep "^wan_broadcast="; then
         uci set network.wan.broadcast=${word#*"="}
-    elif echo "$word" | grep "^webrtc_device_id="; then
-        webrtc_device_id=${word#*"="}
+    elif echo "$word" | grep "^instance_name="; then
+        instance_name=${word#*"="}
     fi
     next=${words#*" "}
     [ "$words" != "$next" ]
@@ -39,7 +39,7 @@ ln -sf $(readlink -f /www/cgi-bin/cgi-backup) /www/cgi-bin/cgi-backup
 ln -sf $(readlink -f /www/cgi-bin/cgi-download) /www/cgi-bin/cgi-download
 ln -sf $(readlink -f /www/cgi-bin/cgi-exec) /www/cgi-bin/cgi-exec
 ln -sf $(readlink -f /www/cgi-bin/cgi-upload) /www/cgi-bin/cgi-upload
-web_base="devices/$webrtc_device_id/openwrt"
+web_base="devices/$instance_name/openwrt"
 mkdir -p "/www/$web_base/"
 mv /www/cgi-bin "/www/$web_base/"
 mv /www/luci-static "/www/$web_base/"
