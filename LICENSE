@@ -14,6 +14,7 @@ rpcd-mod-luci
 rpcd-mod-rrdns
 luci-mode-rpc
 luci-lib-json
+luci-lib-ipkg
 
 Apache License
 
