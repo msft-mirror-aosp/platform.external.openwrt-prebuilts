@@ -73,17 +73,18 @@ genrule_defaults {
         "shared/config/*",
     ],
     cmd: "mkdir -p $(genDir)/root/upper/etc/uci-defaults && " +
-         "mkdir -p $(genDir)/root/upper/ipks && " +
-         "mkdir -p $(genDir)/root/upper/etc/config && " +
-         "cp $(in) $(genDir)/ && " +
-         "mv $(genDir)/*.ipk $(genDir)/root/upper/ipks && " +
-         "mv $(genDir)/LICENSE $(genDir)/HOW_TO_GET_SOURCE_CODE $(genDir)/INFO $(genDir)/root/upper && " +
-         "mv $(genDir)/0_default_config $(genDir)/root/upper/etc/uci-defaults && " +
-         "find $(genDir) -maxdepth 1 -type f -exec mv {} $(genDir)/root/upper/etc/config \\; && " +
-         "ln -s 2 $(genDir)/root/.fs_state && " +
-         "truncate -s 128M $(out) && " +
-         "$(location make_f2fs) $(out) && " +
-         "$(location sload_f2fs) -f $(genDir)/root -t / $(out)",
+        "mkdir -p $(genDir)/root/upper/ipks && " +
+        "mkdir -p $(genDir)/root/upper/etc/config && " +
+        "cp $(in) $(genDir)/ && " +
+        "mv $(genDir)/*.ipk $(genDir)/root/upper/ipks && " +
+        "mv $(genDir)/LICENSE $(genDir)/HOW_TO_GET_SOURCE_CODE $(genDir)/INFO $(genDir)/root/upper && " +
+        "mv $(genDir)/0_default_config $(genDir)/root/upper/etc/uci-defaults && " +
+        "find $(genDir) -maxdepth 1 -type f -exec mv {} $(genDir)/root/upper/etc/config \\; && " +
+        "ln -s 2 $(genDir)/root/.fs_state && " +
+        "truncate -s 128M $(out) && " +
+        // -U, -r, and -T are all required to ensure deterministic output
+        "$(location make_f2fs) -U ad4b1460-d756-4655-bb72-6734fbe906d8 -r -T 0 $(out) && " +
+        "$(location sload_f2fs) -T 0 -f $(genDir)/root -t / $(out)",
 }
 
 genrule {
